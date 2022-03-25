@@ -37,7 +37,6 @@ async function reConnect(network, endpoint) {
 }
 
 async function createApi(network, endpoint) {
-  console.log("endpoint", endpoint);
   const provider = new WsProvider(endpoint, 100);
 
   let options = {};
