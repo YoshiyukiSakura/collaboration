@@ -5,6 +5,7 @@ const { karuraOptions } = require("./karura");
 const { bifrostOptions } = require("./bifrost");
 const { kintsugiOptions } = require("./kintsugi");
 const { polkadexOptions } = require("./polkadex");
+const { cfgOptions } = require("./centrifuge");
 const { chains } = require("../constants");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { getEndpoints } = require("../env");
@@ -36,6 +37,7 @@ async function reConnect(network, endpoint) {
 }
 
 async function createApi(network, endpoint) {
+  console.log("endpoint", endpoint);
   const provider = new WsProvider(endpoint, 100);
 
   let options = {};
@@ -49,6 +51,8 @@ async function createApi(network, endpoint) {
     options = kintsugiOptions;
   } else if (chains.polkadex === network) {
     options = polkadexOptions;
+  } else if (chains.centrifuge === network) {
+    options = cfgOptions;
   }
 
   const api = new ApiPromise({ provider, ...options });
@@ -57,7 +61,7 @@ async function createApi(network, endpoint) {
   try {
     await api.isReadyOrError;
   } catch (e) {
-    statusLogger.error(`Can not connect to ${network} ${endpoint}`);
+    statusLogger.error(`Can not connect to ${network} ${endpoint}`, e);
     return;
   }
 

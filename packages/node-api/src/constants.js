@@ -7,6 +7,7 @@ const chains = {
   bifrost: "bifrost",
   kintsugi: "kintsugi",
   polkadex: "polkadex",
+  centrifuge: "centrifuge",
 };
 
 const oneSecond = 1000;
@@ -38,7 +39,7 @@ const symbols = {
   KINT: "KINT",
 };
 
-const nodeTimeoutSeconds = 20;
+const nodeTimeoutSeconds = 30;
 
 module.exports = {
   chains,
