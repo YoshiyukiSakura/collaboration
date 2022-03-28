@@ -3,9 +3,9 @@ const { statusLogger } = require("../logger");
 const { khalaOptions } = require("./khala");
 const { karuraOptions } = require("./karura");
 const { bifrostOptions } = require("./bifrost");
-const { kintsugiOptions } = require("./kintsugi");
 const { polkadexOptions } = require("./polkadex");
 const { cfgOptions } = require("./centrifuge");
+const { interlayOptions } = require("./interlay");
 const { chains } = require("../constants");
 const { ApiPromise, WsProvider } = require("@polkadot/api");
 const { getEndpoints } = require("../env");
@@ -32,6 +32,7 @@ async function reConnect(network, endpoint) {
   }
   delete endpointApis[endpoint];
 
+  console.log(`re-connect network: ${network} with endpoint: ${endpoint}`);
   await createApi(network, endpoint);
   statusLogger.info(`Reconnect to ${network} ${endpoint}`);
 }
@@ -46,19 +47,19 @@ async function createApi(network, endpoint) {
     options = khalaOptions;
   } else if (chains.bifrost === network) {
     options = bifrostOptions;
-  } else if (chains.kintsugi === network) {
-    options = kintsugiOptions;
   } else if (chains.polkadex === network) {
     options = polkadexOptions;
   } else if (chains.centrifuge === network) {
     options = cfgOptions;
+  } else if ([chains.kintsugi, chains.interlay].includes(network)) {
+    options = interlayOptions;
   }
 
   const api = new ApiPromise({ provider, ...options });
   endpointApis[endpoint] = api;
 
   try {
-    await api.isReadyOrError;
+    await api.isReady;
   } catch (e) {
     statusLogger.error(`Can not connect to ${network} ${endpoint}`, e);
     return;
@@ -93,6 +94,10 @@ async function createApiInLimitTime(network, endpoint) {
 
 async function createApiForChain({ chain, endpoints }) {
   for (const endpoint of endpoints) {
+    if (!endpoint) {
+      continue;
+    }
+
     try {
       await createApiInLimitTime(chain, endpoint);
       console.log(`${chain}: ${endpoint} created!`);
@@ -113,7 +118,9 @@ async function createChainApis() {
 
   const promises = [];
   for (const { chain, endpoints } of chainEndpoints) {
-    promises.push(createApiForChain({ chain, endpoints }));
+    if ((endpoints || []).length > 0) {
+      promises.push(createApiForChain({ chain, endpoints }));
+    }
   }
 
   return Promise.all(promises);

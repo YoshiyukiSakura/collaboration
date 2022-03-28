@@ -6,8 +6,8 @@ const chains = {
   statemine: "statemine",
   bifrost: "bifrost",
   kintsugi: "kintsugi",
-  polkadex: "polkadex",
   centrifuge: "centrifuge",
+  interlay: "interlay",
 };
 
 const oneSecond = 1000;
@@ -28,6 +28,7 @@ const chainBlockTime = {
   bifrost: twelveSecond,
   kintsugi: twelveSecond,
   polkadex: twelveSecond,
+  interlay: twelveSecond,
   [evmChains.moonriver]: twelveSecond,
   [evmChains.moonbeam]: twelveSecond,
 };
