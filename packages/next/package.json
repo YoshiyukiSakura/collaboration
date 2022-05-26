@@ -13,6 +13,7 @@
   "dependencies": {
     "@osn/common-ui": "^0.0.61",
     "@osn/polkadot-react-identicon": "^1.0.8",
+    "@osn/rich-text-editor": "^0.1.0",
     "@polkadot/extension-dapp": "0.43.1",
     "@polkadot/util": "9.0.1",
     "@polkadot/util-crypto": "9.0.1",
@@ -58,6 +59,8 @@
     "next-transpile-modules": "^9.0.0",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0",
-    "react-test-renderer": "^17.0.2"
+    "process": "^0.11.10",
+    "react-test-renderer": "^17.0.2",
+    "tty-browserify": "^0.0.1"
   }
 }
